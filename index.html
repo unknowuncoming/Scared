@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>😈</title>
+  <style>
+    body {
+      background-color: black;
+      color: red;
+      font-family: "Courier New", monospace;
+      padding: 30px;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    #texto {
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+      font-size: 80px;
+    }
+
+    video {
+      width: 600px;
+      height: auto;
+      border: 2px solid red;
+      display: none;
+      margin-left: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="texto"></div>
+  <video id="camera" autoplay></video>
+
+  <script>
+    const mensagem = "eu estou vendo você, tem medo de mim?";
+    const texto = document.getElementById("texto");
+    const video = document.getElementById("camera");
+    let i = 0;
+
+    function digitar() {
+      if (i < mensagem.length) {
+        texto.innerHTML += mensagem[i];
+        i++;
+        setTimeout(digitar, 100);
+      } else {
+        ativarCamera(); // liga a câmera quando o texto termina
+      }
+    }
+
+    function ativarCamera() {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(function(stream) {
+            video.srcObject = stream;
+            video.style.display = "block";
+          })
+          .catch(function(error) {
+            texto.innerHTML += "\n\n(Câmera bloqueada ou não suportada)";
+          });
+      } else {
+        texto.innerHTML += "\n\n(Câmera não suportada neste dispositivo)";
+      }
+    }
+
+    digitar();
+  </script>
+
+</body>
+</html>
